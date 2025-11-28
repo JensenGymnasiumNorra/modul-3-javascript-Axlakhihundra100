@@ -1,37 +1,39 @@
-// Här har du fått all js kod från genomgången
-// Den har självklart andra variabelnamn och annan funktionalitet än vad du behöver
-// Använ ddenna fil som utgångspunkt för att lösa uppgiften eller skriv din egen kod
+const slider = document.getElementById("numberSlider");
+const output = document.getElementById("selectedNumber");
+const randomOutput = document.getElementById("randomNumber");
+const hintOutput = document.getElementById("hint");
 
-let temperatureSlider = document.getElementById("temperatureSlider");
-let selectedTemperatureElement = document.getElementById("selectedTemperature");
-let weatherMessageElement = document.getElementById("weatherMessage");
+let randomNumber = null;
 
-// Initial display of selected temperature
-selectedTemperatureElement.innerText = temperatureSlider.value + "°C";
+output.innerHTML = slider.value;
+slider.oninput = function() {
+    output.innerHTML = this.value;
+};
+function updateSelectedNumber() {
+    output.innerHTML = this.value;
+}
+function generateRandomNumber() {
+    randomNumber = Math.floor(Math.random() * 100.5);
+    randomOutput.innerHTML = randomNumber;   
+    hintOutput.innerHTML = "";
 
-// Initial update of weather message based on the default temperature
-updateWeatherMessage(temperatureSlider.value);
-
-// Event listener for slider change
-temperatureSlider.addEventListener("input", function() {
-    // Update the displayed temperature
-    selectedTemperatureElement.innerText = temperatureSlider.value + "°C";
-
-    // Update the weather message based on the selected temperature
-    updateWeatherMessage(temperatureSlider.value);
-});
-
-// Function to update the weather message
-function updateWeatherMessage(temperature) {
-    if (temperature > 30) {
-        weatherMessageElement.innerText = "It's a hot day!";
-        weatherMessageElement.style.color = "red";
-    } else if (temperature <= 30 && temperature >= 20) {
-        weatherMessageElement.innerText = "The weather is pleasant.";
-        weatherMessageElement.style.color = "green";
-    } else {
-        weatherMessageElement.innerText = "It's a bit chilly.";
-        weatherMessageElement.style.color = "blue";
-    }
 }
 
+
+
+function hintUser() {
+  if (randomNumber === null) {
+    hintOutput.innerHTML = "Generate a number first.";
+    return;
+  }
+
+  const guess = Number(slider.value); 
+
+  if (guess > randomNumber) {
+    hintOutput.innerHTML = "The random number is lower than your selected number.";
+  } else if (guess < randomNumber) {
+    hintOutput.innerHTML = "The random number is higher than your selected number.";
+  } else {
+    hintOutput.innerHTML = "Congratulations! You guessed the correct number!";
+  }
+}
